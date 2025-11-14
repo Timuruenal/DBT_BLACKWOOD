@@ -1,7 +1,0 @@
-sources:
-  - name: blackwood
-    database: ecommerce_dv
-    schema: landing
-    tables:
-      - name: orders
-      - name: order_lines

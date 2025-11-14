@@ -1,0 +1,208 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Staging table for customer data with Data Vault hash keys"
+    columns:
+      - name: customer_id
+        description: "Business key - unique customer identifier"
+        tests:
+          - not_null
+      - name: customer_hk
+        description: "Hub hash key: MD5(customer_id)"
+        tests:
+          - not_null
+      - name: hash_diff
+        description: "Satellite hash diff for change detection"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Timestamp when record was loaded into STG"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: stg_order
+    description: "Staging table for order data with Data Vault hash keys"
+    columns:
+      - name: order_id
+        description: "Business key - unique order identifier"
+        tests:
+          - not_null
+      - name: customer_id
+        description: "Foreign key to customer"
+        tests:
+          - not_null
+      - name: order_hk
+        description: "Hub hash key: MD5(order_id)"
+        tests:
+          - not_null
+      - name: customer_hk
+        description: "Hub hash key: MD5(customer_id)"
+        tests:
+          - not_null
+      - name: link_customer_order_hk
+        description: "Link hash key for customer-order relationship"
+        tests:
+          - not_null
+      - name: hash_diff
+        description: "Satellite hash diff for change detection"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Timestamp when record was loaded into STG"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: stg_order_lines
+    description: "Staging table for order line data with Data Vault hash keys"
+    columns:
+      - name: order_line_id
+        description: "Business key - unique order_line identifier"
+        tests:
+          - not_null
+      - name: order_id
+        description: "Foreign key to order"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Foreign key to product"
+        tests:
+          - not_null
+      - name: order_line_hk
+        description: "Hub hash key: MD5(order_line_id)"
+        tests:
+          - not_null
+      - name: order_hk
+        description: "Hub hash key: MD5(order_id)"
+        tests:
+          - not_null
+      - name: product_hk
+        description: "Hub hash key: MD5(product_id)"
+        tests:
+          - not_null
+      - name: link_order_line_product_hk
+        description: "Link hash key for order_line-product relationship"
+        tests:
+          - not_null
+      - name: link_order_order_line_hk
+        description: "Link hash key for order_order_line relationship"
+        tests:
+          - not_null
+      - name: hash_diff
+        description: "Satellite hash diff for change detection"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Timestamp when record was loaded into STG"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: stg_order_returns
+    description: "Staging table for order return data with Data Vault hash keys"
+    columns:
+      - name: return_id
+        description: "Business key - unique return identifier"
+        tests:
+          - not_null
+      - name: order_line_id
+        description: "Foreign key to order_line"
+        tests:
+          - not_null
+      - name: order_id
+        description: "Foreign key to order"
+        tests:
+          - not_null
+      - name: return_hk
+        description: "Hub hash key: MD5(return_id)"
+        tests:
+          - not_null
+      - name: order_line_hk
+        description: "Hub hash key: MD5(order_line_id)"
+        tests:
+          - not_null
+      - name: order_hk
+        description: "Hub hash key: MD5(order_id)"
+        tests:
+          - not_null
+      - name: link_order_line_return_hk
+        description: "Link hash key for order_line-return relationship"
+        tests:
+          - not_null
+      - name: link_order_order_line_hk
+        description: "Link hash key for order-order_line relationship"
+        tests:
+          - not_null
+      - name: hash_diff
+        description: "Satellite hash diff for change detection"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Timestamp when record was loaded into STG"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: stg_payments
+    description: "Staging table for payment data with Data Vault hash keys"
+    columns:
+      - name: payment_id
+        description: "Business key - unique payment identifier"
+        tests:
+          - not_null
+          - unique
+      - name: payment_hk
+        description: "Hub hash key: MD5(payment_id)"
+        tests:
+          - not_null
+      - name: hash_diff
+        description: "Satellite hash diff for change detection"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Timestamp when record was loaded into STG"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: "Staging table for product data with Data Vault hash keys"
+    columns:
+      - name: product_id
+        description: "Business key - unique product identifier"
+        tests:
+          - not_null
+          - unique
+      - name: product_hk
+        description: "Hub hash key: MD5(product_id)"
+        tests:
+          - not_null
+      - name: hash_diff
+        description: "Satellite hash diff for change detection"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Timestamp when record was loaded into STG"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
