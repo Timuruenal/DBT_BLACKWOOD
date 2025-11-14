@@ -1,0 +1,80 @@
+version: 2
+
+sources:
+  - name: blackwood
+    database: ecommerce_dv
+    schema: landing
+    description: "Landing layer for raw data from S3"
+    
+    tables:
+      - name: customers
+        description: "Raw customer data from S3 Parquet files"
+        columns:
+          - name: raw_data
+            description: "Complete customer record in VARIANT format"
+          - name: _loaded_at
+            description: "Timestamp when record was loaded into Snowflake"
+          - name: _filename
+            description: "Source file name from S3 for data lineage"
+          - name: _file_row_number
+            description: "Row number within the source file"
+      
+      - name: orders
+        description: "Raw order data from S3 Parquet files"
+        columns:
+          - name: raw_data
+            description: "Complete order record in VARIANT format"
+          - name: _loaded_at
+            description: "Timestamp when record was loaded into Snowflake"
+          - name: _filename
+            description: "Source file name from S3"
+          - name: _file_row_number
+            description: "Row number within the source file"
+      
+      - name: order_lines
+        description: "Raw order line data from S3 Parquet files"
+        columns:
+          - name: raw_data
+            description: "Complete order line record in VARIANT format"
+          - name: _loaded_at
+            description: "Timestamp when record was loaded into Snowflake"
+          - name: _filename
+            description: "Source file name from S3"
+          - name: _file_row_number
+            description: "Row number within the source file"
+      
+      - name: order_returns
+        description: "Raw order return data from S3 Parquet files"
+        columns:
+          - name: raw_data
+            description: "Complete order return record in VARIANT format"
+          - name: _loaded_at
+            description: "Timestamp when record was loaded into Snowflake"
+          - name: _filename
+            description: "Source file name from S3"
+          - name: _file_row_number
+            description: "Row number within the source file"
+      
+      - name: payments
+        description: "Raw payment data from S3 Parquet files"
+        columns:
+          - name: raw_data
+            description: "Complete payment record in VARIANT format"
+          - name: _loaded_at
+            description: "Timestamp when record was loaded into Snowflake"
+          - name: _filename
+            description: "Source file name from S3"
+          - name: _file_row_number
+            description: "Row number within the source file"
+      
+      - name: products
+        description: "Raw product data from S3 Parquet files"
+        columns:
+          - name: raw_data
+            description: "Complete product record in VARIANT format"
+          - name: _loaded_at
+            description: "Timestamp when record was loaded into Snowflake"
+          - name: _filename
+            description: "Source file name from S3"
+          - name: _file_row_number
+            description: "Row number within the source file"
