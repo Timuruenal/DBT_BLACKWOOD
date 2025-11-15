@@ -1,10 +1,10 @@
 WITH parsed_data AS (
   -- Parse VARIANT data into typed columns
   SELECT
-    RAW_DATA:return_id::VARCHAR           AS return_id,
-    RAW_DATA:order_line_id::VARCHAR       AS order_line_id,
-    RAW_DATA:order_id::VARCHAR            AS order_id,
-    RAW_DATA:return_timestamp::BIGINT     AS return_timestamp
+    RAW_DATA:return_id::VARCHAR                     AS return_id,
+    RAW_DATA:original_order_line_id::VARCHAR        AS order_line_id,
+    RAW_DATA:order_id::VARCHAR                      AS order_id,
+    RAW_DATA:return_timestamp::BIGINT               AS return_timestamp
     
   FROM {{ source('blackwood', 'order_returns') }}
 )

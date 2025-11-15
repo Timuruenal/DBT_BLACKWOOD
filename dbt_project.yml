@@ -37,3 +37,25 @@ models:
     staging:
       +materialized: table
       +schema: 01_stg
+    
+    # -------------------------------------------------------------------------
+    # RAW VAULT LAYER - Data Vault 2.0 Komponenten
+    # -------------------------------------------------------------------------
+    raw_vault:
+      +materialized: incremental
+      +schema: 02_rdv
+      
+      # Hubs: Business Keys (INSERT-only)
+      hubs:
+        +tags: ['raw_vault', 'hub']
+        +on_schema_change: 'fail'
+      
+      # Links: Beziehungen zwischen Hubs (INSERT-only)
+      links:
+        +tags: ['raw_vault', 'link']
+        +on_schema_change: 'fail'
+      
+      # Satellites: Beschreibende Attribute (INSERT-only)
+      satellites:
+        +tags: ['raw_vault', 'satellite']
+        +on_schema_change: 'fail'

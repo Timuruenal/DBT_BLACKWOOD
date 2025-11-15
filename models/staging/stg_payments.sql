@@ -41,7 +41,7 @@ SELECT
     MD5(order_id),
     '||',
     MD5(payment_id)
-  )) AS link_payment_order_hk,
+  )) AS link_order_payment_hk,
   
   -- Hash Diff for Satellite
   MD5(CONCAT_WS('||',
