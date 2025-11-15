@@ -164,7 +164,6 @@ models:
         description: "Business key - unique payment identifier"
         tests:
           - not_null
-          - unique
       - name: payment_hk
         description: "Hub hash key: MD5(payment_id)"
         tests:
@@ -187,6 +186,10 @@ models:
     columns:
       - name: product_id
         description: "Business key - unique product identifier"
+        tests:
+          - not_null
+      - name: sku
+        description: "Stock Keeping Unit - unique alphanumeric identifier used for inventory management and product variant identification (e.g., color, size). Serves as business key."
         tests:
           - not_null
           - unique

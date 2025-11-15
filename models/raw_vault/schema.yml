@@ -1,0 +1,517 @@
+version: 2
+
+models:
+  # =============================================================================
+  # HUBS - Business Keys
+  # =============================================================================
+  
+  - name: hub_customer
+    description: "Hub table for customers - contains unique customer business keys"
+    columns:
+      - name: customer_hk
+        description: "Hub hash key - MD5(customer_id)"
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Business key - unique customer identifier"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Date when the hub record was first loaded"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: hub_order
+    description: "Hub table for orders - contains unique order business keys"
+    columns:
+      - name: order_hk
+        description: "Hub hash key - MD5(order_id)"
+        tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: "Business key - unique order identifier"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Date when the hub record was first loaded"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: hub_order_line
+    description: "Hub table for order lines - contains unique order line business keys"
+    columns:
+      - name: order_line_hk
+        description: "Hub hash key - MD5(order_line_id)"
+        tests:
+          - not_null
+          - unique
+      - name: order_line_id
+        description: "Business key - unique order line identifier"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Date when the hub record was first loaded"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: hub_product
+    description: "Hub table for products - contains unique product business keys"
+    columns:
+      - name: product_hk
+        description: "Hub hash key - MD5(product_id)"
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        description: "Business key - unique product identifier"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Date when the hub record was first loaded"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: hub_payment
+    description: "Hub table for payments - contains unique payment business keys"
+    columns:
+      - name: payment_hk
+        description: "Hub hash key - MD5(payment_id)"
+        tests:
+          - not_null
+          - unique
+      - name: payment_id
+        description: "Business key - unique payment identifier"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Date when the hub record was first loaded"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: hub_return
+    description: "Hub table for returns - contains unique return business keys"
+    columns:
+      - name: return_hk
+        description: "Hub hash key - MD5(return_id)"
+        tests:
+          - not_null
+          - unique
+      - name: return_id
+        description: "Business key - unique return identifier"
+        tests:
+          - not_null
+      - name: load_date
+        description: "Date when the hub record was first loaded"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  # =============================================================================
+  # LINKS - Relationships between Hubs
+  # =============================================================================
+
+  - name: link_customer_order
+    description: "Link table connecting customers to their orders"
+    columns:
+      - name: link_customer_order_hk
+        description: "Link hash key - MD5(customer_hk || order_hk)"
+        tests:
+          - not_null
+          - unique
+      - name: customer_hk
+        description: "Foreign key to hub_customer"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_customer')
+              field: customer_hk
+      - name: order_hk
+        description: "Foreign key to hub_order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order')
+              field: order_hk
+      - name: load_date
+        description: "Date when the link was first established"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: link_order_order_line
+    description: "Link table connecting orders to their order lines"
+    columns:
+      - name: link_order_order_line_hk
+        description: "Link hash key - MD5(order_hk || order_line_hk)"
+        tests:
+          - not_null
+          - unique
+      - name: order_hk
+        description: "Foreign key to hub_order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order')
+              field: order_hk
+      - name: order_line_hk
+        description: "Foreign key to hub_order_line"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order_line')
+              field: order_line_hk
+      - name: load_date
+        description: "Date when the link was first established"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: link_order_line_product
+    description: "Link table connecting order lines to products"
+    columns:
+      - name: link_order_line_product_hk
+        description: "Link hash key - MD5(order_line_hk || product_hk)"
+        tests:
+          - not_null
+          - unique
+      - name: order_line_hk
+        description: "Foreign key to hub_order_line"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order_line')
+              field: order_line_hk
+      - name: product_hk
+        description: "Foreign key to hub_product"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_product')
+              field: product_hk
+      - name: load_date
+        description: "Date when the link was first established"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: link_order_line_return
+    description: "Link table connecting order lines to returns"
+    columns:
+      - name: link_order_line_return_hk
+        description: "Link hash key - MD5(order_line_hk || return_hk)"
+        tests:
+          - not_null
+          - unique
+      - name: order_line_hk
+        description: "Foreign key to hub_order_line"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order_line')
+              field: order_line_hk
+      - name: return_hk
+        description: "Foreign key to hub_return"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_return')
+              field: return_hk
+      - name: load_date
+        description: "Date when the link was first established"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: link_order_payment
+    description: "Link table connecting orders to payments"
+    columns:
+      - name: link_order_payment_hk
+        description: "Link hash key - MD5(order_hk || payment_hk)"
+        tests:
+          - not_null
+          - unique
+      - name: payment_hk
+        description: "Foreign key to hub_payment"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_payment')
+              field: payment_hk
+      - name: order_hk
+        description: "Foreign key to hub_order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order')
+              field: order_hk
+      - name: load_date
+        description: "Date when the link was first established"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+# =============================================================================
+  # SATELLITES - Descriptive Attributes (INSERT-only approach)
+  # =============================================================================
+
+  - name: sat_customer
+    description: "Satellite table for customer descriptive attributes - INSERT-only for full history"
+    columns:
+      - name: customer_hk
+        description: "Foreign key to hub_customer"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_customer')
+              field: customer_hk
+      - name: load_date
+        description: "Date when this satellite record was loaded"
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Business timestamp from source system"
+      - name: first_name
+        description: "Customer first name"
+      - name: last_name
+        description: "Customer last name"
+      - name: email
+        description: "Customer email address"
+      - name: phone_number
+        description: "Customer phone number"
+      - name: address
+        description: "Customer address"
+      - name: birth_date
+        description: "Customer birth date"
+      - name: signup_date
+        description: "Date when customer signed up"
+      - name: tier
+        description: "Customer tier/level"
+      - name: status
+        description: "Customer status"
+      - name: last_purchase_date
+        description: "Date of customer's last purchase"
+      - name: hash_diff
+        description: "Hash of all descriptive attributes for change detection"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: sat_order
+    description: "Satellite table for order descriptive attributes - INSERT-only for full history"
+    columns:
+      - name: order_hk
+        description: "Foreign key to hub_order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order')
+              field: order_hk
+      - name: load_date
+        description: "Date when this satellite record was loaded"
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Business timestamp from source system"
+      - name: total_amount
+        description: "Total order amount"
+      - name: item_count
+        description: "Number of items in order"
+      - name: status
+        description: "Order status"
+      - name: hash_diff
+        description: "Hash of all descriptive attributes for change detection"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: sat_order_line
+    description: "Satellite table for order line descriptive attributes - INSERT-only for full history"
+    columns:
+      - name: order_line_hk
+        description: "Foreign key to hub_order_line"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order_line')
+              field: order_line_hk
+      - name: load_date
+        description: "Date when this satellite record was loaded"
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Business timestamp from source system"
+      - name: product_name
+        description: "Name of the product"
+      - name: category
+        description: "Product category"
+      - name: collection
+        description: "Product collection"
+      - name: quantity
+        description: "Quantity ordered"
+      - name: unit_price
+        description: "Price per unit"
+      - name: line_total
+        description: "Total for this line"
+      - name: hash_diff
+        description: "Hash of all descriptive attributes for change detection"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: sat_product
+    description: "Satellite table for product descriptive attributes - INSERT-only for full history"
+    columns:
+      - name: product_hk
+        description: "Foreign key to hub_product"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_product')
+              field: product_hk
+      - name: load_date
+        description: "Date when this satellite record was loaded"
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Business timestamp from source system"
+      - name: current_price
+        description: "Current product price"
+      - name: sku
+        description: "Stock Keeping Unit"
+      - name: name
+        description: "Product name"
+      - name: category
+        description: "Product category"
+      - name: collection
+        description: "Product collection"
+      - name: base_price
+        description: "Base product price"
+      - name: launch_date
+        description: "Product launch date"
+      - name: discontinuation_date
+        description: "Product discontinuation date"
+      - name: subcategory
+        description: "Product subcategory"
+      - name: description
+        description: "Product description"
+      - name: material
+        description: "Product material"
+      - name: hash_diff
+        description: "Hash of all descriptive attributes for change detection"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: sat_payment
+    description: "Satellite table for payment descriptive attributes - INSERT-only for full history"
+    columns:
+      - name: payment_hk
+        description: "Foreign key to hub_payment"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_payment')
+              field: payment_hk
+      - name: load_date
+        description: "Date when this satellite record was loaded"
+        tests:
+          - not_null
+      - name: timestamp
+        description: "Business timestamp from source system"
+      - name: payment_method
+        description: "Method of payment"
+      - name: payment_status
+        description: "Payment status"
+      - name: amount
+        description: "Payment amount"
+      - name: transaction_reference
+        description: "Transaction reference number"
+      - name: retry_count
+        description: "Number of payment retries"
+      - name: failure_reason
+        description: "Reason for payment failure if applicable"
+      - name: hash_diff
+        description: "Hash of all descriptive attributes for change detection"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null
+
+  - name: sat_return
+    description: "Satellite table for return descriptive attributes - INSERT-only for full history"
+    columns:
+      - name: return_hk
+        description: "Foreign key to hub_return"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_return')
+              field: return_hk
+      - name: load_date
+        description: "Date when this satellite record was loaded"
+        tests:
+          - not_null
+      - name: return_timestamp
+        description: "Timestamp when return was processed"
+      - name: hash_diff
+        description: "Hash of all descriptive attributes for change detection"
+        tests:
+          - not_null
+      - name: record_source
+        description: "Source system identifier"
+        tests:
+          - not_null

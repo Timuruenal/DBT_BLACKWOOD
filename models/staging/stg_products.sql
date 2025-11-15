@@ -10,6 +10,7 @@ WITH parsed_data AS (
     RAW_DATA:collection::VARCHAR          AS collection,
     RAW_DATA:base_price::FLOAT            AS base_price,
     RAW_DATA:launch_date::DATE            AS launch_date,
+    RAW_DATA:discontinuation_date::DATE   AS discontinuation_date,
     RAW_DATA:subcategory::VARCHAR         AS subcategory,
     RAW_DATA:description::VARCHAR         AS description,
     RAW_DATA:material::VARCHAR            AS material
@@ -30,6 +31,7 @@ SELECT
   collection,
   base_price,
   launch_date,
+  discontinuation_date,
   subcategory,
   description,
   material,
@@ -50,6 +52,7 @@ SELECT
     COALESCE(collection, '~'),
     COALESCE(base_price::VARCHAR, '~'),
     COALESCE(launch_date::VARCHAR, '~'),
+    COALESCE(discontinuation_date::VARCHAR, '~'),
     COALESCE(subcategory, '~'),
     COALESCE(description, '~'),
     COALESCE(material, '~')
